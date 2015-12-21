@@ -19,7 +19,7 @@ DB_FILE = 'itunesdb.sqlite3'
 ITUNES_FILE = 'itunes_library.xml'
 Base = declarative_base()
 
-
+'''
 class Song(Base):
     """
     Row representing useful info about a song in iTunes library
@@ -36,6 +36,7 @@ class Song(Base):
     def __repr__(self):
         return "Song(id=%s, title=%s, artist=%s, album=%s, location=%s)" % (
             self.id, self.title, self.artist, self.album, self.location)
+'''
 
 
 class SongDb():
