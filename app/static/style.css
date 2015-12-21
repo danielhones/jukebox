@@ -6,3 +6,26 @@ html {
 body {
     color: black;
 }
+
+h1 {
+    text-align: center;
+}
+
+#manager-view {
+    float: top;
+    height: 500px;
+    overflow-y: scroll;
+}
+
+#player-view {
+    float: bottom;
+    height: 50px;
+    border-top: thin gray solid;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    overflow-y: hidden;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
