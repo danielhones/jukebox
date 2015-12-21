@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+  </head>
+  <body>
+    <h1>Songs</h1>
+
+    <table class="table table-striped">
+      <thead>
+	<tr>
+	  <th>Title</th><th>Artist</th><th>Album</th>
+	</tr>
+      </thead>
+      <tbody>
+	{% for s in songs %}
+	<tr>
+	  <td>{{s.title}}</td><td>{{s.artist}}</td><td>{{s.album}}</td>
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>
+    
+  </body>
+</html>
