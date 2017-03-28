@@ -13,36 +13,57 @@
     <div class="content-wrapper">
 
       <div id="manager-view">
-	<h1>Jukebox</h1>
+
+        <div id="header">
+          <div>
+	    <h1>Jukebox</h1>
+          </div>
+
+          <div id="filter_container">
+            <input id="filter_input" name="filter" placeholder="Filter songs">
+          </div>
+
+          <div class="page_controls">
+            <center>
+              <a class="previous_page disabled">&lt; Back</a>
+              <span class="page_indicator"></span>
+              <a class="next_page disabled">Next &gt;</a>
+            </center>
+          </div>
+        </div>
 	
-	{# Try .table-boredered too #}
 	<div class="table-responsive">
-	  <table class="table table-striped table-hover table-condensed">
+	  <table id="songs_table" class="table table-striped table-hover table-condensed table-bordered">
 	    <thead>
 	      <tr>
-		<th>Title</th><th>Artist</th><th>Album</th>
+		<th class="song_title">Title</th>
+                <th class="song_length">Length</th>
+                <th class="song_artist">Artist</th>
+                <th class="song_album">Album</th>
 	      </tr>
 	    </thead>
 	    <tbody>
-	      {% for s in songs %}
-	      <tr>
-		<td data-song-id="{{s.id}}" class="song_row">{{s.title}}</td><td>{{s.artist.name}}</td><td>{{s.album.title}}</td>
-	      </tr>
-	      {% endfor %}
+              <tr><td colspan="4" style="text-align:center;">Loading...</td>
 	    </tbody>
 	  </table>
+          <div class="page_controls">
+            <center>
+              <a class="previous_page disabled">&lt; Back</a>
+              <span class="page_indicator"></span>
+              <a class="next_page disabled">Next &gt;</a>
+            </center>
+          </div>
 	</div>
       </div>
       
       <div id="player-view">
-	<center>
-	  {# Need to add custom next and back controls here #}
-	  <audio controls id="player">
+        <center>
+          <span id="currently_playing"></span>
+          <audio controls id="player">
 	    <source src="" type="audio/mpeg" id="audio-source">
 	    <i>Your browser doesn't support this audio</i>
 	  </audio>
-	</center>
-
+        </center>
       </div>
 
     </div>

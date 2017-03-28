@@ -30,6 +30,56 @@ h1 {
     padding-bottom: 8px;
 }
 
-td.song_row {
+#player {
+    width: 40%;
+}
+
+tr.song_row {
     cursor: pointer;
+}
+
+th.song_title {
+    width: 35%;
+}
+
+th.song_length {
+    width: 10%;
+}
+
+th.song_artist {
+    width: 25%;
+}
+
+th.song_album {
+    width: 30%;
+}
+
+#filter_container, .page_controls {
+    width: 24em;
+    margin: auto;
+    margin-bottom: 12px;
+}
+
+#filter_input {
+    min-width: 100%;
+}
+
+a {
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a.disabled {
+    pointer-events: none;
+    color: grey;
+}
+
+span.page_indicator {
+    margin-left: 6px;
+    margin-right: 6px;
+    padding: 2px;
+    color: grey;
 }

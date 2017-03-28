@@ -14,10 +14,18 @@ class BaseModel(Model):
     class Meta:
         database = db
 
+    @classmethod
+    def all(cls):
+        return cls.select().where(True)
+
+    @property
+    def attributes(self):
+        return self._data.copy()
+
     def __repr__(self):
         return "{name}({data})".format(
             name=self.__class__.__name__,
-            data=", ".join(['{}={}'.format(k, repr(v)) for k,v in self._data.items()]))
+            data=", ".join(['{}={}'.format(k, repr(v)) for k,v in self.attributes.items()]))
 
 
 class Artist(BaseModel):
@@ -36,9 +44,36 @@ class Song(BaseModel):
     title = CharField()
     location = CharField()
     track_id = IntegerField()
-    length = IntegerField(null=True)
+    length = IntegerField(null=True)   # in milliseconds
     album = ForeignKeyField(Album, related_name='songs', null=True)
     artist = ForeignKeyField(Artist, related_name='songs', null=True)
+
+    @property
+    def formatted_length(self):
+        if self.length is None:
+            return ""
+        seconds = self.length // 1000
+        minutes = seconds // 60
+        seconds = seconds - (minutes * 60)
+        return "{}:{:02d}".format(minutes, seconds)
+
+    @property
+    def artist_name(self):
+        return self.artist.name if self.artist is not None else ""
+    
+    @property
+    def album_title(self):
+        return self.album.title if self.album is not None else ""
+
+    @property
+    def attributes(self):
+        r = self._data.copy()
+        r.update({
+            'formatted_length': self.formatted_length,
+            'artist_name': self.artist_name,
+            'album_title': self.album_title,
+        })
+        return r
 
 
 def create_db():
