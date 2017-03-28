@@ -1,8 +1,10 @@
+appdirs==1.4.3
 click==6.7
 Flask==0.12
 itsdangerous==0.24
 Jinja2==2.9.5
 MarkupSafe==1.0
+packaging==16.8
 peewee==2.9.1
 -e git://github.com/liamks/pyitunes@0b95ec6d746826ab549af6911457b0fa1e69c20c#egg=pyItunes
 six==1.10.0

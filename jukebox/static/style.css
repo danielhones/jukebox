@@ -29,3 +29,7 @@ h1 {
     padding-top: 8px;
     padding-bottom: 8px;
 }
+
+td.song_row {
+    cursor: pointer;
+}

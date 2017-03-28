@@ -1,8 +1,13 @@
+import itertools
+import logging
+import os
+
 from peewee import *
 
+from jukebox import settings
 
-DB_FILE = 'itunesdb.sqlite3'
-db = SqliteDatabase(DB_FILE)
+
+db = SqliteDatabase(settings.DATABASE_FILE)
 
 
 class BaseModel(Model):
@@ -30,11 +35,13 @@ class Song(BaseModel):
     """
     title = CharField()
     location = CharField()
-    length = IntegerField()
+    track_id = IntegerField()
+    length = IntegerField(null=True)
     album = ForeignKeyField(Album, related_name='songs', null=True)
+    artist = ForeignKeyField(Artist, related_name='songs', null=True)
 
 
 def create_db():
     db.connect()
-    db.create_tables([Album, Artist, Song])
+    db.create_tables([Album, Artist, Song], safe=True)
 

@@ -1,1 +1,5 @@
-__all__ = ["jukebox", "models"]
+__all__ = [
+    "jukebox",
+    "models",
+    "settings"
+]
