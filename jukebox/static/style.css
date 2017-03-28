@@ -5,6 +5,8 @@ html {
 
 body {
     color: black;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 h1 {
@@ -19,7 +21,7 @@ h1 {
 
 #player-view {
     float: bottom;
-    height: 50px;
+    min-height: 50px;
     border-top: thin gray solid;
     bottom: 0px;
     left: 0px;
@@ -30,20 +32,36 @@ h1 {
     padding-bottom: 8px;
 }
 
+#player-view span {
+    display: inline-block;
+    width: 48%;
+}
+
+#currently_playing {
+    text-align: center;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
 #player {
-    width: 40%;
+    width: 100%;
 }
 
 tr.song_row {
     cursor: pointer;
 }
 
-th.song_title {
+th.song_title, td.song_title {
     width: 35%;
 }
 
+td.song_title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 th.song_length {
-    width: 10%;
+    width: 5%;
 }
 
 th.song_artist {
@@ -55,13 +73,31 @@ th.song_album {
 }
 
 #filter_container, .page_controls {
-    width: 24em;
-    margin: auto;
     margin-bottom: 12px;
 }
 
+div.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#filter_container {
+    display: flex;
+}
+
 #filter_input {
-    min-width: 100%;
+/*    min-width: 80%;
+    max-width: 100%;
+ */
+    flex-grow: 1;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+#result_count {
+    display: inline-block;
+    margin-left: 8px;
+    margin-top: 2px;
 }
 
 a {
@@ -82,4 +118,8 @@ span.page_indicator {
     margin-right: 6px;
     padding: 2px;
     color: grey;
+}
+
+#songs_table tbody tr.song_row.playing {
+    background-color: rgba(192, 192, 255, 0.3);
 }

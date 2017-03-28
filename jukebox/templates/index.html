@@ -19,16 +19,24 @@
 	    <h1>Jukebox</h1>
           </div>
 
-          <div id="filter_container">
-            <input id="filter_input" name="filter" placeholder="Filter songs">
+          <div class="row">
+            <div id="filter_container" class="col-lg-4 col-lg-offset-4">
+              <input id="filter_input" name="filter" placeholder="Filter songs">
+              <span id="result_count"></span>
+            </div>
           </div>
 
-          <div class="page_controls">
-            <center>
-              <a class="previous_page disabled">&lt; Back</a>
-              <span class="page_indicator"></span>
-              <a class="next_page disabled">Next &gt;</a>
-            </center>
+
+          <div class="row">
+            <div class="page_controls col-lg-4 col-lg-offset-4">
+              <center>
+                <a class="first_page disabled">&lt;&lt; First</a>&nbsp;
+                <a class="previous_page disabled">&lt; Back</a>
+                <span class="page_indicator"></span>
+                <a class="next_page disabled">Next &gt;</a>&nbsp;
+                <a class="last_page disabled">Last &gt;&gt;</a>
+              </center>
+            </div>
           </div>
         </div>
 	
@@ -48,22 +56,24 @@
 	  </table>
           <div class="page_controls">
             <center>
+              <a class="first_page disabled">&lt;&lt; First</a>&nbsp;
               <a class="previous_page disabled">&lt; Back</a>
               <span class="page_indicator"></span>
-              <a class="next_page disabled">Next &gt;</a>
+              <a class="next_page disabled">Next &gt;</a>&nbsp;
+              <a class="last_page disabled">Last &gt;&gt;</a>
             </center>
           </div>
 	</div>
       </div>
       
       <div id="player-view">
-        <center>
-          <span id="currently_playing"></span>
+        <div class="col-xs-12 col-sm-6" id="currently_playing"></div>
+        <div class="col-xs-12 col-sm-6">
           <audio controls id="player">
 	    <source src="" type="audio/mpeg" id="audio-source">
 	    <i>Your browser doesn't support this audio</i>
 	  </audio>
-        </center>
+        </div>
       </div>
 
     </div>

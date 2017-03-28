@@ -2,20 +2,41 @@ var all_songs = [];
 var filtered_songs = [];
 var table_page = 0;
 var ENTRIES_PER_PAGE = 100;
+var LOOP_QUEUE = false;
 var current_song = {};
+var current_queue = [];
+var current_queue_index = 0;
 
 
 function load_next_song() {
-    
+    current_queue_index += 1;
+    if (current_queue_index == current_queue.length) {
+        console.log("Reached end of queue.");
+        return;
+    }
+    load_song(current_queue[current_queue_index].id, true);
 }
 
 
-function load_song(id) {
+function load_song(id, play) {
     current_song = all_songs[id];
+    $('tr.song_row').removeClass('playing');
+    $('tr.song_row[data-song-id=' + id + ']').addClass('playing');
     document.getElementById('audio-source').src = '/songs/' + id.toString() + '/file';
     document.getElementById('player').load();
+    if (play) {
+        document.getElementById('player').play();
+    }
     $('#currently_playing').html(current_song.artist_name + ' - ' + current_song.title);
     document.getElementById('player').onended = load_next_song;
+}
+
+
+function update_queue(song_id) {
+    var song = all_songs[song_id];
+    var index = filtered_songs.indexOf(song);
+    current_queue = filtered_songs.slice(index, filtered_songs.length);
+    current_queue_index = 0;
 }
 
 
@@ -56,9 +77,14 @@ function next_page() {
 
 function clickable_song_row() {
     $('tr.song_row').on('click', function() {
-        load_song($(this).data('song-id'),
-                  $(this).data('song-title'),
-                  $(this).data('song-artist'));
+        var song_id = $(this).data('song-id');
+        update_queue(song_id);
+        load_song(song_id);
+    });
+    $('tr.song_row').on('dblclick', function() {
+        var song_id = $(this).data('song-id');
+        update_queue(song_id);
+        load_song(song_id, true);
     });
 }
 
@@ -74,13 +100,14 @@ function update_table() {
                         'data-song-title': i.title,
                         'data-song-artist': i.artist_name
                        }).
-                append($('<td/>', {text: i.title})).
+                append($('<td/>', {text: i.title, class: 'song_title'})).
                 append($('<td/>', {text: i.formatted_length})).
                 append($('<td/>', {text: i.artist_name})).
                 append($('<td/>', {text: i.album_title}))
         );
     });
 
+    $('tr[data-song-id=' + current_song.id + ']').addClass('playing');
     $('a.previous_page, a.first_page, a.next_page, a.last_page').removeClass('disabled');
     if (table_page == 0) {
         $('a.previous_page, a.first_page').addClass('disabled');
@@ -90,6 +117,7 @@ function update_table() {
     }
     var page_text = (table_page+1).toString() + " of " + (max_page()+1).toString();
     $('span.page_indicator').text(page_text);
+    $('#result_count').text(filtered_songs.length.toString() + ' songs');
     clickable_song_row();
 }
 
@@ -116,6 +144,9 @@ function set_player_css() {
     var playerViewPadding = parseInt($('#player-view').css('padding-top'), 10);
     var playerHeight = $('#player').outerHeight();
     var playerViewHeight = playerHeight + playerViewPadding * 2;
+    if ($('#currently_playing').width() / $('#player-view').width() > 0.6) {
+        playerViewHeight += 24;
+    }
     $('#player-view').css('height', playerViewHeight);
     $('#manager-view').css('height', window.innerHeight - playerViewHeight);
 }

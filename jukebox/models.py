@@ -18,14 +18,15 @@ class BaseModel(Model):
     def all(cls):
         return cls.select().where(True)
 
-    @property
-    def attributes(self):
-        return self._data.copy()
+    def attributes(self, exclude=None):
+        if exclude is None:
+            exclude = []
+        return {k: v for k, v in self._data.items() if k not in exclude}
 
     def __repr__(self):
         return "{name}({data})".format(
             name=self.__class__.__name__,
-            data=", ".join(['{}={}'.format(k, repr(v)) for k,v in self.attributes.items()]))
+            data=", ".join(['{}={}'.format(k, repr(v)) for k,v in self._data.items()]))
 
 
 class Artist(BaseModel):
@@ -65,9 +66,10 @@ class Song(BaseModel):
     def album_title(self):
         return self.album.title if self.album is not None else ""
 
-    @property
-    def attributes(self):
-        r = self._data.copy()
+    def attributes(self, exclude=None):
+        if exclude is None:
+            exclude = []
+        r = {k: v for k, v in self._data.items() if k not in exclude}
         r.update({
             'formatted_length': self.formatted_length,
             'artist_name': self.artist_name,
