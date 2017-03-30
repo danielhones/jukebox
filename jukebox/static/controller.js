@@ -1,5 +1,6 @@
-var all_songs = [];
+var all_songs = {};
 var filtered_songs = [];
+var song_order = [];
 var table_page = 0;
 var ENTRIES_PER_PAGE = 100;
 var LOOP_QUEUE = false;
@@ -125,7 +126,7 @@ function update_table() {
 function filter_songs() {
     var words = $('#filter_input').val().split(/\s+/);
     filtered_songs = [];
-    Object.keys(all_songs).forEach( function(i) {
+    song_order.forEach( function(i) {
         var song = all_songs[i];
         var check = song.title.toLowerCase() + song.artist_name.toLowerCase() + song.album_title.toLowerCase();
         var match = words.every(function(word) {
@@ -167,9 +168,10 @@ $(document).ready(function() {
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-            all_songs = data;
+            all_songs = data.songs;
+	    song_order = data.order
             filtered_songs = [];
-            Object.keys(all_songs).forEach( function(i) {
+            song_order.forEach(function(i) {
                 filtered_songs.push(all_songs[i]);
             });
             update_table();

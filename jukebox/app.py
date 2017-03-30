@@ -2,12 +2,14 @@ import json
 import os
 import time
 
-from flask import Flask, url_for, render_template, request, send_from_directory
+from flask import Flask, url_for, render_template, request, send_file, send_from_directory
 from playhouse.shortcuts import model_to_dict
 
 from jukebox.models import Album, Artist, db, Song
 from jukebox.settings import ITUNES_MUSIC_DIRECTORY
 
+
+SONG_CACHE_FILE = "/tmp/jukebox_songs.json"
 
 db.connect()
 app = Flask(__name__)
@@ -21,14 +23,19 @@ def index():
 @app.route('/songs.json')
 def all_songs():
     # check for cached json file first, serve if exists
-    #songs = Song.select().join(Album).join(Artist).order_by(Artist.name, Album.title, Song.track_number)
-    songs = Song.select().join(Album).join(Artist).order_by(Artist.name, Album.title)
+    if os.path.isfile(SONG_CACHE_FILE):
+        print("Serving cached song file")
+        return send_file(SONG_CACHE_FILE)
+    songs = Song.select().join(Album).join(Artist).order_by(Artist.name, Album.title, Song.track_number)
     x = time.time()
-    r = json.dumps(
-        {i.id: model_to_dict(i, exclude='location', extra_attrs=['formatted_length', 'artist_name', 'album_title']) for i in songs}
-    )
-    print("TOOK THIS LONG:", time.time() - x)
-    return r
+    song_dicts = {i.id: model_to_dict(i, exclude='location', extra_attrs=['formatted_length', 'artist_name', 'album_title']) for i in songs}
+    r = {
+        "order": list(map(lambda s: s.id, songs)),
+        "songs": song_dicts,
+    }
+    with open(SONG_CACHE_FILE, 'w') as f:
+        json.dump(r, f)
+    return send_file(SONG_CACHE_FILE)
 
 
 @app.route('/songs/<int:song_id>/file')
