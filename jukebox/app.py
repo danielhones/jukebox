@@ -1,7 +1,9 @@
 import json
 import os
+import time
 
 from flask import Flask, url_for, render_template, request, send_from_directory
+from playhouse.shortcuts import model_to_dict
 
 from jukebox.models import Album, Artist, db, Song
 from jukebox.settings import ITUNES_MUSIC_DIRECTORY
@@ -17,21 +19,16 @@ def index():
 
 
 @app.route('/songs.json')
-def page_songs():
-    start = request.args.get('start', None)
-    end = request.args.get('end', None)
-
-    if (start is not None and start < 0) or (start is not None and end is not None and end <= start):
-        return json.dumps({'error': 'end must be greater than start and start must be >= 0'}), 400
-
-    if start is None:
-        start = 0
-
-    if end is None:
-        songs = Song.all()[start:]
-    else:
-        songs = Song.all()[start:end]
-    return json.dumps({i.id: i.attributes(exclude=['location']) for i in songs})
+def all_songs():
+    # check for cached json file first, serve if exists
+    #songs = Song.select().join(Album).join(Artist).order_by(Artist.name, Album.title, Song.track_number)
+    songs = Song.select().join(Album).join(Artist).order_by(Artist.name, Album.title)
+    x = time.time()
+    r = json.dumps(
+        {i.id: model_to_dict(i, exclude='location', extra_attrs=['formatted_length', 'artist_name', 'album_title']) for i in songs}
+    )
+    print("TOOK THIS LONG:", time.time() - x)
+    return r
 
 
 @app.route('/songs/<int:song_id>/file')
@@ -41,9 +38,9 @@ def song(song_id):
     except:
         return "song not found", 404
 
-    # relative = os.path.relpath(song.location, start=ITUNES_MUSIC_DIRECTORY)
-    # return send_from_directory(ITUNES_MUSIC_DIRECTORY, relative)
-    return send_from_directory('static', 'untitled.mp3')
+    full_path = os.path.join('/', song.location)
+    relative = os.path.relpath(full_path, start=ITUNES_MUSIC_DIRECTORY)
+    return send_from_directory(ITUNES_MUSIC_DIRECTORY, relative)
 
 
 @app.route('/search/<query>')

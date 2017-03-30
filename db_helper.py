@@ -40,20 +40,21 @@ class SongDb():
 
 
                 try:
-                    artist, _ = Artist.get_or_create(name=s.artist)
+                    artist, _ = Artist.get_or_create(name=s.artist.strip())
                 except Exception as e:
-                    print("Error getting artist:", e, "Song:", s.name)
+                    #print("Error getting artist:", e, "Song:", s.name)
                     artist = None
 
                 try:
-                    album, _ = Album.get_or_create(title=s.album, artist=artist)
+                    album, _ = Album.get_or_create(title=s.album.strip(), artist=artist)
                 except Exception as e:
-                    print("Error getting album:", e, "Song:", s.name)
+                    #print("Error getting album:", e, "Song:", s.name)
                     album = None
                     
                 new_song = Song.create(title=s.name,
                                        location=s.location,
                                        track_id=key,
+                                       track_number=s.track_number,
                                        length=s.length,
                                        artist=artist,
                                        album=album)

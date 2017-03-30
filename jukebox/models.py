@@ -16,12 +16,7 @@ class BaseModel(Model):
 
     @classmethod
     def all(cls):
-        return cls.select().where(True)
-
-    def attributes(self, exclude=None):
-        if exclude is None:
-            exclude = []
-        return {k: v for k, v in self._data.items() if k not in exclude}
+        return cls.select()
 
     def __repr__(self):
         return "{name}({data})".format(
@@ -45,6 +40,7 @@ class Song(BaseModel):
     title = CharField()
     location = CharField()
     track_id = IntegerField()
+    track_number = IntegerField(null=True)
     length = IntegerField(null=True)   # in milliseconds
     album = ForeignKeyField(Album, related_name='songs', null=True)
     artist = ForeignKeyField(Artist, related_name='songs', null=True)
@@ -80,5 +76,5 @@ class Song(BaseModel):
 
 def create_db():
     db.connect()
-    db.create_tables([Album, Artist, Song], safe=True)
+    db.create_tables([Album, Artist, Song])
 

@@ -25,7 +25,7 @@ function load_song(id, play) {
     document.getElementById('audio-source').src = '/songs/' + id.toString() + '/file';
     document.getElementById('player').load();
     if (play) {
-        document.getElementById('player').play();
+        document.getElementById('player').oncanplay = function() { document.getElementById('player').play(); };
     }
     $('#currently_playing').html(current_song.artist_name + ' - ' + current_song.title);
     document.getElementById('player').onended = load_next_song;
