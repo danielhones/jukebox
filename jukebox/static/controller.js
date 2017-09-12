@@ -175,7 +175,12 @@ $(document).ready(function() {
                 filtered_songs.push(all_songs[i]);
             });
             update_table();
-            $('#filter_input').on('input', function() { filter_songs(); });
+            if (screen.availWidth < 1024) {
+                // probably mobile and thus too slow to update on input event:
+                $('#filter_input').on('change', function() { filter_songs(); });
+            } else {
+                $('#filter_input').on('input', function() { filter_songs(); });
+            }
         }
     });    
 });
