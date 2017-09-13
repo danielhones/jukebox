@@ -13,11 +13,10 @@ pip install -r requirements.txt
 python setup.py install
 ```
 
-Copy your iTunes library XML file to itunes_library.xml in the repo directory or, change `ITUNES_FILE` in db_helper.py to a different path and copy it there.
+Copy your iTunes library XML file to itunes_library.xml in the repo directory or change `ITUNES_FILE` in db_helper.py to a different path and copy it there.
 
 ```
-
 python db_helper.py init
 ```
 
-Then deploy or run the app however you like and visit the site in your browser.
+Then deploy the app however you like and visit the site in your browser.  Depending on your version of OS X, you migh need to allow it to accept incoming connections; OS X will display a dialog for that.
