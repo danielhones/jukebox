@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='jukebox',
-      # url='https://gitlab.com/danielhones/jukebox',
+      url='https://github.com/danielhones/jukebox',
       license='MIT',
       version='0.0.0',
       packages=['jukebox'],
